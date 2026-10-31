@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simple Resume Builder</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f3f6fb;margin:0;color:#222}
+header{background:#2563eb;color:white;text-align:center;padding:18px;font-size:22px;font-weight:bold}
+main{max-width:850px;margin:22px auto;padding:0 14px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:16px;box-shadow:0 2px 10px #0000000d}
+h2{font-size:18px;margin:0 0 15px;color:#1d4ed8}
+input,textarea{width:100%;padding:11px;margin:0 0 12px;border:1px solid #ccc;border-radius:7px;font:14px Arial}
+textarea{height:75px;resize:vertical}
+button{background:#2563eb;color:white;border:0;padding:11px 16px;border-radius:7px;font-weight:bold;cursor:pointer}
+button.gray{background:#64748b}
+#preview{border:1px solid #ddd;padding:22px;min-height:250px;border-radius:8px}
+#preview h1{margin:0;color:#1d4ed8}#preview h3{border-bottom:1px solid #ddd;padding-bottom:5px;color:#1d4ed8}
+.small{color:#555;font-size:13px}
+@media print{header,.form,.actions{display:none}body{background:white}main{margin:0}.card{box-shadow:none;padding:0}#preview{border:0}}
+</style>
+</head>
+<body>
+<header>Simple Resume Builder</header>
+<main>
+<section class="card form">
+<h2>Enter Your Details</h2>
+<input id="name" placeholder="Your Name">
+<input id="email" placeholder="Email Address">
+<input id="phone" placeholder="Phone Number">
+<input id="education" placeholder="Education">
+<input id="skills" placeholder="Skills (HTML, CSS, C++)">
+<input id="project" placeholder="Project Title">
+<textarea id="about" placeholder="About Yourself"></textarea>
+<div class="actions">
+<button onclick="makeResume()">Create Resume</button>
+<button class="gray" onclick="clearForm()">Clear</button>
+</div>
+</section>
+<section class="card">
+<h2>Resume Preview</h2>
+<div id="preview">
+<h1>Your Name</h1>
+<p class="small">Email | Phone</p>
+<h3>About Me</h3><p>Your introduction will appear here.</p>
+<h3>Education</h3><p>Your education will appear here.</p>
+<h3>Skills</h3><p>Your skills will appear here.</p>
+<h3>Project</h3><p>Your project will appear here.</p>
+</div>
+<br>
+<button onclick="window.print()">Download / Print PDF</button>
+</section>
+</main>
+<script>
+function makeResume(){
+const v=id=>document.getElementById(id).value.trim();
+if(!v('name')||!v('email')||!v('phone')){alert('Please enter your name, email and phone number.');return;}
+const safe=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.getElementById('preview').innerHTML=
+`<h1>${safe(v('name'))}</h1><p class="small">${safe(v('email'))} | ${safe(v('phone'))}</p>
+<h3>About Me</h3><p>${safe(v('about')||'Not provided')}</p>
+<h3>Education</h3><p>${safe(v('education')||'Not provided')}</p>
+<h3>Skills</h3><p>${safe(v('skills')||'Not provided')}</p>
+<h3>Project</h3><p>${safe(v('project')||'Not provided')}</p>`;
+}
+function clearForm(){['name','email','phone','education','skills','project','about'].forEach(id=>document.getElementById(id).value='');document.getElementById('preview').innerHTML='<h1>Your Name</h1><p class="small">Email | Phone</p><h3>About Me</h3><p>Your introduction will appear here.</p><h3>Education</h3><p>Your education will appear here.</p><h3>Skills</h3><p>Your skills will appear here.</p><h3>Project</h3><p>Your project will appear here.</p>';}
+</script>
+</body>
+</html>
